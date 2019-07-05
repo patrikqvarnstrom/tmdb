@@ -19,34 +19,43 @@ class TMDBService {
 
     private var dataTask: URLSessionDataTask?
 
-    var apiKey: String {
-        return "nottherealkey"
-    }
-
-    var suffix: String {
-        return "api_key=\(apiKey)"
-    }
-
-    init(networkManager: NetworkManager,
+    init(networkManager: NetworkManager = NetworkManager(),
          urlSession: URLSession = URLSession(configuration: .default)) {
         self.networkManager = networkManager
         self.urlSession = urlSession
     }
 
-    private func getUpcoming(listRequest: ListRequest, onCompletion: @escaping (NetworkResult<[ListItem]>) -> Void) {
-        networkManager.loadData(from: Router(.upcoming(page: listRequest.page)).asURLRequest(), model: [ListItem].self) { result in
+    private func guestSessionAuthentication(onCompletion: @escaping (NetworkResult<GuestSession>) -> Void) {
+        networkManager.loadData(from: Router(.authenticate).asURLRequest(), model: GuestSession.self) { result in
+            onCompletion(result)
+        }
+    }
+
+    private func getUpcoming(listRequest: ListRequest, onCompletion: @escaping (NetworkResult<Page>) -> Void) {
+        networkManager.loadData(from: Router(.upcoming(page: listRequest.page)).asURLRequest(), model: Page.self) { result in
                 onCompletion(result)
         }
     }
 
-    func fetchUpcoming(page: String = "1",
-                          completionHandler: @escaping (_ listItems: [ListItem]?, _ error: Error?) -> Void) {
-        getUpcoming(listRequest: ListRequest(page: page), onCompletion: { result in
+    func authenticateGuest(completionHandler: @escaping (_ guestSession: GuestSession?, _ error: Error?) -> Void) {
+        guestSessionAuthentication(onCompletion: { result in
             switch result {
             case .failure(let error):
                 completionHandler(nil, error)
-            case .success(let items):
-                completionHandler(items, nil)
+            case .success(let session):
+                completionHandler(session, nil)
+            }
+        })
+    }
+
+    func fetchUpcoming(page: String = "1", completionHandler: @escaping (_ page: Page?, _ error: Error?) -> Void) {
+        getUpcoming(listRequest: ListRequest(page: page), onCompletion: { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                completionHandler(nil, error)
+            case .success(let page):
+                completionHandler(page, nil)
             }
         })
     }

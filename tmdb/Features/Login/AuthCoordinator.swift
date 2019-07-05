@@ -1,5 +1,5 @@
 //
-//  ListCoordinator.swift
+//  AuthenticationCoordinator.swift
 //  tmdb
 //
 //  Created by Patrik Qvarnström on 2019-07-05.
@@ -9,20 +9,22 @@
 import Foundation
 import UIKit
 
-class ListCoordinator: Coordinator {
+class AuthCoordinator: Coordinator {
 
+    weak var coordinator: Coordinator?
     private weak var rootViewController: UINavigationController?
 
-    init(rootViewController: UINavigationController) {
+    init(coordinator: Coordinator? = nil, rootViewController: UINavigationController) {
+        self.coordinator = coordinator
         self.rootViewController = rootViewController
     }
 
     private func makeViewController(for destination: Destination) -> UIViewController {
         switch destination {
-        case .movie(let id):
-            return UIViewController()
-        case .upcoming:
-            return UpcomingListController(style: .grouped)
+        case .authentication:
+            let viewController = LoginViewController()
+            viewController.authenticationDelegate = self
+            return viewController
         default:
             assertionFailure("Non supported destination")
             return UIViewController()
@@ -31,14 +33,22 @@ class ListCoordinator: Coordinator {
 
     func navigate(to destination: Destination) {
         switch destination {
-        case .movie:
-            let viewController = makeViewController(for: destination)
-            rootViewController?.pushViewController(viewController, animated: true)
-        case .upcoming:
+        case .authentication:
             let viewController = makeViewController(for: destination)
             rootViewController?.pushViewController(viewController, animated: true)
         default:
             break
         }
     }
+}
+
+extension AuthCoordinator: AuthenticationDelegate {
+    func authenticationDidFail() {
+        // print("do something")
+    }
+
+    func authenticationDidSucceed() {
+        coordinator?.navigate(to: .upcoming)
+    }
+
 }

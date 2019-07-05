@@ -17,6 +17,18 @@ struct Router {
         self.route = route
     }
 
+    private var apiKey: String {
+        return ""
+    }
+
+    var suffix: String {
+        return "api_key=\(apiKey)"
+    }
+
+    var suffixWithLanguage: String {
+        return "api_key=\(apiKey)&language=en-US"
+    }
+
     private var baseURL: String {
         return "https://api.themoviedb.org/3/"
     }
@@ -57,11 +69,11 @@ struct Router {
     private func pathAndParameters() -> (path: String, parameters: [String: Any]?) {
         switch route {
         case .authenticate:
-            return (route.path, nil)
+            return (route.path + suffix, nil)
         case .movie(let id):
-            return (route.path, ["": id])
+            return (route.path + suffixWithLanguage, ["": id])
         case .upcoming(let page):
-            return (route.path, ["&page=": page])
+            return (route.path + suffixWithLanguage, ["&page=": page])
         }
     }
 

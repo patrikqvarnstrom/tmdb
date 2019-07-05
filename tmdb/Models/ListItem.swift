@@ -9,16 +9,18 @@
 import Foundation
 
 struct ListItem: Codable {
-    let id: String
+    let id: Int
     let adult: Bool
-    let backdropPath: String
-    let genres: [Genre]
+    let backdropPath: String?
+    let genres: [Int]
     let originalLanguage: String
     let originalTitle: String
     let overview: String
-    let posterPath: URL
+    let posterPath: String?
     let popularity: Double
-    let releaseDate: Date
+    let releaseDate: String
+    let statusMessage: String?
+    let statusCode: Int?
     let title: String
     let video: Bool
     let voteAverage: Double
@@ -31,6 +33,8 @@ struct ListItem: Codable {
         case originalTitle = "original_title"
         case posterPath = "poster_path"
         case releaseDate = "release_date"
+        case statusMessage = "status_message"
+        case statusCode = "status_code"
         case voteAverage = "vote_average"
     }
 }

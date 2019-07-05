@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol Fetchable: class {
+    func fetched()
+}
+
 enum NetworkResult<T> {
     case success(T?)
     case failure(Error)
