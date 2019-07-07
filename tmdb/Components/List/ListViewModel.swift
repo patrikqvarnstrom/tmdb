@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ListViewModel {
+protocol ListViewModel: class {
     var fetchableDelegate: Fetchable? { get set }
     var listItems: [ListItem] { get }
     var sections: Int { get }

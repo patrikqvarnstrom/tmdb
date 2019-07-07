@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		48E15B42283F724EA71CC395 /* Pods_tmdbUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66644798559F4F50DFCF1E81 /* Pods_tmdbUITests.framework */; };
 		5117B11022D1F64800A814EF /* load-fail.json in Resources */ = {isa = PBXBuildFile; fileRef = 5117B10F22D1F64800A814EF /* load-fail.json */; };
+		5117B11422D2137800A814EF /* LargeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5117B11322D2137800A814EF /* LargeListCell.swift */; };
 		51B1DBB222CFB1CD00D81966 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1DBB122CFB1CD00D81966 /* AppDelegate.swift */; };
 		51B1DBB922CFB1CE00D81966 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51B1DBB822CFB1CE00D81966 /* Assets.xcassets */; };
 		51B1DBBC22CFB1CE00D81966 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51B1DBBA22CFB1CE00D81966 /* LaunchScreen.storyboard */; };
@@ -56,6 +57,7 @@
 		25CE52487DD578754FD1E24B /* Pods-tmdbTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tmdbTests.release.xcconfig"; path = "Target Support Files/Pods-tmdbTests/Pods-tmdbTests.release.xcconfig"; sourceTree = "<group>"; };
 		3A527824948A137AABD97A78 /* Pods_tmdb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tmdb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5117B10F22D1F64800A814EF /* load-fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "load-fail.json"; sourceTree = "<group>"; };
+		5117B11322D2137800A814EF /* LargeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeListCell.swift; sourceTree = "<group>"; };
 		51B1DBAE22CFB1CD00D81966 /* tmdb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tmdb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51B1DBB122CFB1CD00D81966 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		51B1DBB822CFB1CE00D81966 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,6 +119,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5117B11B22D229D600A814EF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5117B11322D2137800A814EF /* LargeListCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		51B1DBA522CFB1CD00D81966 = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +203,7 @@
 		51B1DBE722CFB6EE00D81966 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				5117B11B22D229D600A814EF /* Cells */,
 				51B1DBE822CFB6F800D81966 /* ListCoordinator.swift */,
 				51B1DBEA22CFB83500D81966 /* ListViewController.swift */,
 				51B1DC1222D0C49E00D81966 /* ListViewModel.swift */,
@@ -518,6 +529,7 @@
 				51B1DBFF22CFF1D800D81966 /* SessionManager.swift in Sources */,
 				51B1DC0E22D009DF00D81966 /* Page.swift in Sources */,
 				51B1DC1322D0C49E00D81966 /* ListViewModel.swift in Sources */,
+				5117B11422D2137800A814EF /* LargeListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

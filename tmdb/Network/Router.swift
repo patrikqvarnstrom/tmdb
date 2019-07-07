@@ -17,8 +17,12 @@ struct Router {
         self.route = route
     }
 
+    enum ImageWidth: String {
+        case large = "w780"
+    }
+
     private var apiKey: String {
-        return ""
+        return "299522d27290e4a4ecc167e8c324ede9"
     }
 
     var suffix: String {
@@ -27,6 +31,10 @@ struct Router {
 
     var suffixWithLanguage: String {
         return "api_key=\(apiKey)&language=en-US"
+    }
+
+    private var baseUrlForImages: String {
+        return "https://image.tmdb.org/t/p/\(ImageWidth.large.rawValue)"
     }
 
     private var baseURL: String {
@@ -60,10 +68,18 @@ struct Router {
     }
 
     private func createURLRequest(path: String) -> URLRequest {
-        guard let fullURL = URL(string: baseURL + path) else { fatalError("Unable to parse url for " + path)}
-        var request = URLRequest(url: fullURL)
-        request.httpMethod = method.rawValue
-        return request
+        switch route {
+        case .image:
+            guard let fullURL = URL(string: baseUrlForImages + path) else { fatalError("Unable to parse url for " + path)}
+            var request = URLRequest(url: fullURL)
+            request.httpMethod = method.rawValue
+            return request
+        default:
+            guard let fullURL = URL(string: baseURL + path) else { fatalError("Unable to parse url for " + path)}
+            var request = URLRequest(url: fullURL)
+            request.httpMethod = method.rawValue
+            return request
+        }
     }
 
     private func pathAndParameters() -> (path: String, parameters: [String: Any]?) {
@@ -74,6 +90,8 @@ struct Router {
             return (route.path + "\(id)?" + suffixWithLanguage, nil)
         case .upcoming(let page):
             return (route.path + suffixWithLanguage + "&page=\(page)", nil)
+        case .image:
+            return (route.path, nil)
         }
     }
 
@@ -81,12 +99,15 @@ struct Router {
         case authenticate
         case movie(id: String)
         case upcoming(page: String)
+        case image(path: String)
 
         var path: String {
             switch self {
             case .authenticate:
                 return "authentication/guest_session/new?"
-            case .movie(let id):
+            case .image(let path):
+                return path
+            case .movie:
                 return "movie/"
             case .upcoming:
                 return "movie/upcoming?"

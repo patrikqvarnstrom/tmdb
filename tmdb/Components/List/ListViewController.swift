@@ -7,6 +7,8 @@
 //
 
 import UIKit
+
+import SDWebImage
 import SnapKit
 
 class ListViewController: UITableViewController {
@@ -36,13 +38,21 @@ class ListViewController: UITableViewController {
         title = "Upcoming"
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.reuseIdentifier)
+        tableView.register(LargeListCell.self, forCellReuseIdentifier: LargeListCell.reuseIdentifier)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let item = viewModel?.listItems[indexPath.row] else { return UITableViewCell() }
-        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reuseIdentifier, for: indexPath)
-        cell.textLabel?.text = item.title
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LargeListCell.reuseIdentifier, for: indexPath) as? LargeListCell else { return UITableViewCell() }
+        
+        cell.genreLabel.text = item.genres.description
+        cell.releaseDateLabel.text = item.releaseDate
+        cell.titleLabel.text = item.originalTitle
+
+        if let imageUrl = Router(.image(path: item.posterPath ?? "")).asURLRequest()?.url {
+            cell.poster.sd_setImage(with: imageUrl)
+        }
+
         return cell
     }
 

@@ -19,7 +19,7 @@ class ListCoordinator: Coordinator {
 
     private func makeViewController(for destination: Destination) -> UIViewController {
         switch destination {
-        case .movie(let id):
+        case .movie:
             return UIViewController()
         case .upcoming:
             let viewController = ListViewController(style: .grouped)

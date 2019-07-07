@@ -12,7 +12,7 @@ final class UpcomingViewModel: ListViewModel {
 
     private let tmdbService: TMDBService
 
-    var sections = 1
+    var sections = 3
     var listItems = [ListItem]()
 
     private var isFetchInProgress: Bool = false
