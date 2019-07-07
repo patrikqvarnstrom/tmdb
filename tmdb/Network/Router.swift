@@ -22,7 +22,7 @@ struct Router {
     }
 
     private var apiKey: String {
-        return "299522d27290e4a4ecc167e8c324ede9"
+        return ""
     }
 
     var suffix: String {
@@ -86,6 +86,11 @@ struct Router {
         switch route {
         case .authenticate:
             return (route.path + suffix, nil)
+        case .search(let page, let query):
+            guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+                return (route.path + suffix, nil)
+            }
+            return (route.path + suffix + "&query=\(encodedQuery)" + "&page=\(page)", nil)
         case .movie(let id):
             return (route.path + "\(id)?" + suffixWithLanguage, nil)
         case .upcoming(let page):
@@ -97,9 +102,10 @@ struct Router {
 
     enum Route {
         case authenticate
-        case movie(id: String)
-        case upcoming(page: String)
         case image(path: String)
+        case movie(id: String)
+        case search(page: String, query: String)
+        case upcoming(page: String)
 
         var path: String {
             switch self {
@@ -109,6 +115,8 @@ struct Router {
                 return path
             case .movie:
                 return "movie/"
+            case .search:
+                return "search/movie?"
             case .upcoming:
                 return "movie/upcoming?"
             }

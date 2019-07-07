@@ -16,6 +16,7 @@ protocol Coordinator: class {
 enum Destination {
     case authentication
     case movie(id: String)
+    case search
     case upcoming
 }
 

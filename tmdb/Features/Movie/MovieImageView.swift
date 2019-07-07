@@ -1,5 +1,5 @@
 //
-//  LargeListCell.swift
+//  LargeImageView.swift
 //  tmdb
 //
 //  Created by Patrik Qvarnström on 2019-07-07.
@@ -11,14 +11,17 @@ import UIKit
 
 import SnapKit
 
-class LargeListCell: UITableViewCell {
+class MovieImageView: UIView {
 
     lazy var poster: UIImageView = {
-        return UIImageView(image: nil)
+        let poster = UIImageView(image: nil)
+        poster.contentMode = .scaleAspectFit
+        return poster
     }()
 
     lazy var genreLabel: UILabel = {
         let genreLabel = UILabel()
+        genreLabel.textAlignment = .center
         genreLabel.numberOfLines = 0
         genreLabel.font = UIFont.systemFont(ofSize: 12)
         genreLabel.adjustsFontSizeToFitWidth = true
@@ -36,20 +39,36 @@ class LargeListCell: UITableViewCell {
 
     lazy var releaseDateLabel: UILabel = {
         let releaseDateLabel = UILabel()
+        releaseDateLabel.textAlignment = .center
         releaseDateLabel.numberOfLines = 0
         releaseDateLabel.font = UIFont.systemFont(ofSize: 12)
         releaseDateLabel.adjustsFontSizeToFitWidth = true
         return releaseDateLabel
     }()
 
+    lazy var overviewLabel: UILabel = {
+        let overviewLabel = UILabel()
+        overviewLabel.textAlignment = .center
+        overviewLabel.numberOfLines = 0
+        overviewLabel.font = UIFont.systemFont(ofSize: 12)
+        overviewLabel.adjustsFontSizeToFitWidth = true
+        overviewLabel.isHidden = true
+        return overviewLabel
+    }()
+
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.spacing = 12
         return stackView
     }()
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    lazy var spacer: UIView = {
+        return UIView()
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupViews()
         setupConstraints()
     }
@@ -60,19 +79,26 @@ class LargeListCell: UITableViewCell {
 
     private func setupConstraints() {
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalToSuperview().inset(24)
         }
 
         poster.snp.makeConstraints { make in
             make.height.equalTo(500)
         }
+
+        spacer.snp.makeConstraints { make in
+            make.height.equalTo(8)
+        }
     }
 
     private func setupViews() {
         stackView.addArrangedSubview(poster)
+        stackView.addArrangedSubview(spacer)
         stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(overviewLabel)
         stackView.addArrangedSubview(genreLabel)
         stackView.addArrangedSubview(releaseDateLabel)
+        stackView.addArrangedSubview(spacer)
         addSubview(stackView)
     }
 

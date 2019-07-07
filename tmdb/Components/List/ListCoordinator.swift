@@ -19,10 +19,19 @@ class ListCoordinator: Coordinator {
 
     private func makeViewController(for destination: Destination) -> UIViewController {
         switch destination {
-        case .movie:
-            return UIViewController()
+        case .movie(let id):
+            let viewController = MovieViewController()
+            viewController.setup(with: MovieViewModel(fetchableDelegate: viewController,
+                                                      identifier: id))
+            return viewController
+        case .search:
+            let viewController = MovieListViewController(style: .plain)
+            viewController.coordinator = self
+            viewController.setup(with: UpcomingViewModel(listLayout: .largeImagesWithSearch))
+            return viewController
         case .upcoming:
-            let viewController = ListViewController(style: .grouped)
+            let viewController = MovieListViewController(style: .plain)
+            viewController.coordinator = self
             viewController.setup(with: UpcomingViewModel())
             return viewController
         default:
@@ -32,12 +41,16 @@ class ListCoordinator: Coordinator {
     }
 
     func navigate(to destination: Destination) {
+        let viewController = makeViewController(for: destination)
         switch destination {
         case .movie:
-            let viewController = makeViewController(for: destination)
+            rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
             rootViewController?.pushViewController(viewController, animated: true)
+        case .search:
+            rootViewController?.present(viewController,
+                                        animated: true,
+                                        completion: nil)
         case .upcoming:
-            let viewController = makeViewController(for: destination)
             rootViewController?.pushViewController(viewController, animated: true)
         default:
             break

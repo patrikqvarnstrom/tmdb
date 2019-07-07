@@ -1,5 +1,5 @@
 //
-//  Page.swift
+//  MoviePage.swift
 //  tmdb
 //
 //  Created by Patrik Qvarnström on 2019-07-06.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Page: Codable {
+struct MoviePage: Codable {
     let page: Int
     let results: [ListItem]
 

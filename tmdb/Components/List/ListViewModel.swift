@@ -7,10 +7,20 @@
 //
 
 import Foundation
+import UIKit
+
+enum ListLayout {
+    case largeImages
+    case largeImagesWithSearch
+}
 
 protocol ListViewModel: class {
     var fetchableDelegate: Fetchable? { get set }
     var listItems: [ListItem] { get }
+    var listLayout: ListLayout { get }
     var sections: Int { get }
+    func destination(for indexPath: IndexPath) -> Destination?
     func fetchData()
+    func tmdb()
+    func search(with query: String)
 }

@@ -7,13 +7,15 @@
 //
 
 import Foundation
+import UIKit
 
 final class UpcomingViewModel: ListViewModel {
 
     private let tmdbService: TMDBService
 
-    var sections = 3
+    var listLayout: ListLayout
     var listItems = [ListItem]()
+    var sections = 1
 
     private var isFetchInProgress: Bool = false
     private var page: Int = 1
@@ -21,9 +23,16 @@ final class UpcomingViewModel: ListViewModel {
     weak var fetchableDelegate: Fetchable?
 
     init(fetchableDelegate: Fetchable? = nil,
+         listLayout: ListLayout = .largeImages,
          tmdbService: TMDBService = TMDBService()) {
         self.fetchableDelegate = fetchableDelegate
+        self.listLayout = listLayout
         self.tmdbService = tmdbService
+    }
+
+    func destination(for indexPath: IndexPath) -> Destination? {
+        let item = listItems[indexPath.row]
+        return .movie(id: item.id.description)
     }
 
     func fetchData() {
@@ -40,12 +49,23 @@ final class UpcomingViewModel: ListViewModel {
         })
     }
 
-    func search(query: String) {
-        return
+    func tmdb() {
+        guard let url = URL(string: "https://www.themoviedb.org") else { return }
+        UIApplication.shared.open(url)
     }
 
-    func filterResults() {
-        return
+    func search(with query: String) {
+        guard !isFetchInProgress else { return }
+        isFetchInProgress = true
+
+        tmdbService.fetchSearchResults(page: page.description, query: query, completionHandler: { [weak self] page, err in
+            self?.isFetchInProgress = false
+            if err == nil {
+                self?.page += 1
+                self?.listItems = page?.results ?? []
+            }
+            self?.fetchableDelegate?.fetched()
+        })
     }
 
 }
