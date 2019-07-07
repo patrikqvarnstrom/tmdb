@@ -71,9 +71,9 @@ struct Router {
         case .authenticate:
             return (route.path + suffix, nil)
         case .movie(let id):
-            return (route.path + suffixWithLanguage, ["": id])
+            return (route.path + "\(id)?" + suffixWithLanguage, nil)
         case .upcoming(let page):
-            return (route.path + suffixWithLanguage, ["&page=": page])
+            return (route.path + suffixWithLanguage + "&page=\(page)", nil)
         }
     }
 
@@ -86,7 +86,7 @@ struct Router {
             switch self {
             case .authenticate:
                 return "authentication/guest_session/new?"
-            case .movie:
+            case .movie(let id):
                 return "movie/"
             case .upcoming:
                 return "movie/upcoming?"

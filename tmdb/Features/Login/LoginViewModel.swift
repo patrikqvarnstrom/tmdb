@@ -17,8 +17,8 @@ class LoginViewModel {
 
     weak var authenticationDelegate: AuthenticationDelegate?
 
-    var isAuthenticationValid: Bool {
-        return SessionManager.isAuthenticationValid
+    private var isSessionValid: Bool {
+        return SessionManager.isSessionValid
     }
 
     private let tmdbService: TMDBService
@@ -29,7 +29,11 @@ class LoginViewModel {
         self.tmdbService = tmdbService
     }
 
-    func authenticationRequired() {
+    func authenticate() {
+        isSessionValid ? authenticationDelegate?.authenticationDidSucceed() : authenticationRequired()
+    }
+
+    private func authenticationRequired() {
         tmdbService.authenticateGuest(completionHandler: { [weak self] result, err in
             if let sesssion = result {
                 SessionManager.authenticationDidSucceed(session: sesssion)

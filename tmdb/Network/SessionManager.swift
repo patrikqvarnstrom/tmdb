@@ -36,7 +36,7 @@ class SessionManager {
         case unauthorized
     }
 
-    static var isAuthenticationValid: Bool {
+    static var isSessionValid: Bool {
         guard let storedValue = UserDefaults.standard.value(forKey: sessionExpiration) as? String else { return false }
         guard let expirationDate = DateFormatter().date(from: storedValue) else { return true }
         return expirationDate > Date()

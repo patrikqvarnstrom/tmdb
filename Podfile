@@ -7,6 +7,8 @@ target 'tmdb' do
 
   # Pods for tmdb
   pod 'Alamofire', '~> 5.0.0-beta.5'
+  pod 'lottie-ios'
+  pod 'SnapKit', '~> 5.0.0'
 
   target 'tmdbTests' do
     inherit! :search_paths

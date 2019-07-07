@@ -7,12 +7,11 @@
 //
 
 import UIKit
+import SnapKit
 
-class UpcomingListController: UITableViewController {
+class ListViewController: UITableViewController {
 
-    lazy var viewModel: UpcomingViewModel = {
-        return UpcomingViewModel()
-    }()
+    private var viewModel: ListViewModel?
 
     override init(style: UITableView.Style) {
         super.init(style: style)
@@ -25,8 +24,12 @@ class UpcomingListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        viewModel.fetchableDelegate = self
-        viewModel.fetchData()
+        viewModel?.fetchableDelegate = self
+        viewModel?.fetchData()
+    }
+
+    func setup(with viewModel: ListViewModel) {
+        self.viewModel = viewModel
     }
 
     private func setupViews() {
@@ -37,30 +40,29 @@ class UpcomingListController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = viewModel.listItems[indexPath.row]
+        guard let item = viewModel?.listItems[indexPath.row] else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reuseIdentifier, for: indexPath)
         cell.textLabel?.text = item.title
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let count = viewModel?.listItems.count else { return }
+        if indexPath.row == count - 1 { viewModel?.fetchData() }
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sections
+        return viewModel?.sections ?? 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.listItems.count
+        return viewModel?.listItems.count ?? 0
     }
 
 }
 
-extension UpcomingListController: Fetchable {
+extension ListViewController: Fetchable {
     func fetched() {
         tableView.reloadData()
-    }
-}
-
-extension UIView {
-    static var reuseIdentifier: String {
-        return String(describing: self)
     }
 }

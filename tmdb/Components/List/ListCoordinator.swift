@@ -22,7 +22,9 @@ class ListCoordinator: Coordinator {
         case .movie(let id):
             return UIViewController()
         case .upcoming:
-            return UpcomingListController(style: .grouped)
+            let viewController = ListViewController(style: .grouped)
+            viewController.setup(with: UpcomingViewModel())
+            return viewController
         default:
             assertionFailure("Non supported destination")
             return UIViewController()

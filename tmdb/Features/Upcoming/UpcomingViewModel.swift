@@ -8,12 +8,15 @@
 
 import Foundation
 
-final class UpcomingViewModel {
+final class UpcomingViewModel: ListViewModel {
 
     private let tmdbService: TMDBService
 
     var sections = 1
     var listItems = [ListItem]()
+
+    private var isFetchInProgress: Bool = false
+    private var page: Int = 1
 
     weak var fetchableDelegate: Fetchable?
 
@@ -24,9 +27,14 @@ final class UpcomingViewModel {
     }
 
     func fetchData() {
-        tmdbService.fetchUpcoming(completionHandler: { [weak self] page, err in
+        guard !isFetchInProgress else { return }
+        isFetchInProgress = true
+
+        tmdbService.fetchUpcoming(page: page.description, completionHandler: { [weak self] page, err in
+            self?.isFetchInProgress = false
             if err == nil {
-                self?.listItems = page?.results ?? []
+                self?.page += 1
+                self?.listItems.append(contentsOf: page?.results ?? []) 
             }
             self?.fetchableDelegate?.fetched()
         })

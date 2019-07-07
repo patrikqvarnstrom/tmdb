@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
         appCoordinator = AppCoordinator(window: window)
-        appCoordinator?.navigate(to: .authentication)
+        appCoordinator?.navigate(to: SessionManager.isSessionValid ? .upcoming : .authentication)
 
         return true
     }
