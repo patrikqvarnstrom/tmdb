@@ -22,7 +22,7 @@ struct Router {
     }
 
     private var apiKey: String {
-        return ""
+        return "299522d27290e4a4ecc167e8c324ede9"
     }
 
     var suffix: String {
