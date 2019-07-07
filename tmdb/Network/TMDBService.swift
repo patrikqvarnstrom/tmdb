@@ -9,7 +9,6 @@
 import Foundation
 
 struct SearchRequest {
-    let page: String
     let query: String
 }
 
@@ -35,7 +34,7 @@ class TMDBService {
     }
 
     private func getSearchResult(searchRequest: SearchRequest, onCompletion: @escaping (NetworkResult<MoviePage>) -> Void) {
-        networkManager.loadData(from: Router(.search(page: searchRequest.page, query: searchRequest.query)).asURLRequest(), model: MoviePage.self) { result in
+        networkManager.loadData(from: Router(.search(query: searchRequest.query)).asURLRequest(), model: MoviePage.self) { result in
             onCompletion(result)
         }
     }
@@ -93,8 +92,8 @@ class TMDBService {
         })
     }
 
-    func fetchSearchResults(page: String = "1", query: String, completionHandler: @escaping (_ searchPage: MoviePage?, _ error: Error?) -> Void) {
-        getSearchResult(searchRequest: SearchRequest(page: page, query: query), onCompletion: { result in
+    func fetchSearchResults(query: String, completionHandler: @escaping (_ searchPage: MoviePage?, _ error: Error?) -> Void) {
+        getSearchResult(searchRequest: SearchRequest(query: query), onCompletion: { result in
             switch result {
             case .failure(let error):
                 print(error)

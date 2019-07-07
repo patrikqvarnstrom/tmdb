@@ -86,11 +86,11 @@ struct Router {
         switch route {
         case .authenticate:
             return (route.path + suffix, nil)
-        case .search(let page, let query):
+        case .search(let query):
             guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
                 return (route.path + suffix, nil)
             }
-            return (route.path + suffix + "&query=\(encodedQuery)" + "&page=\(page)", nil)
+            return (route.path + suffix + "&query=\(encodedQuery)", nil)
         case .movie(let id):
             return (route.path + "\(id)?" + suffixWithLanguage, nil)
         case .upcoming(let page):
@@ -104,7 +104,7 @@ struct Router {
         case authenticate
         case image(path: String)
         case movie(id: String)
-        case search(page: String, query: String)
+        case search(query: String)
         case upcoming(page: String)
 
         var path: String {

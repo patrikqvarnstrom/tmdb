@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-final class UpcomingViewModel: ListViewModel {
+final class SearchViewModel: ListViewModel {
 
     private let tmdbService: TMDBService
 
@@ -18,7 +18,7 @@ final class UpcomingViewModel: ListViewModel {
     var sections = 1
 
     private var isFetchInProgress: Bool = false
-    private var page: Int = 1
+    private var query: String?
 
     weak var fetchableDelegate: Fetchable?
 
@@ -28,6 +28,7 @@ final class UpcomingViewModel: ListViewModel {
         self.fetchableDelegate = fetchableDelegate
         self.listLayout = listLayout
         self.tmdbService = tmdbService
+        search(with: "Jurassic")
     }
 
     func destination(for indexPath: IndexPath) -> Destination? {
@@ -36,17 +37,8 @@ final class UpcomingViewModel: ListViewModel {
     }
 
     func fetchData() {
-        guard !isFetchInProgress else { return }
-        isFetchInProgress = true
-
-        tmdbService.fetchUpcoming(page: page.description, completionHandler: { [weak self] page, err in
-            self?.isFetchInProgress = false
-            if err == nil {
-                self?.page += 1
-                self?.listItems.append(contentsOf: page?.results ?? []) 
-            }
-            self?.fetchableDelegate?.fetched()
-        })
+        guard let queryString = query else { return }
+        search(with: queryString)
     }
 
     func tmdb() {
@@ -55,15 +47,15 @@ final class UpcomingViewModel: ListViewModel {
     }
 
     func search(with query: String) {
+        self.query = query
         guard !isFetchInProgress else { return }
         isFetchInProgress = true
-
         tmdbService.fetchSearchResults(query: query, completionHandler: { [weak self] page, err in
-            self?.isFetchInProgress = false
             if err == nil {
-                self?.page += 1
                 self?.listItems = page?.results ?? []
+                self?.query = nil
             }
+            self?.isFetchInProgress = false
             self?.fetchableDelegate?.fetched()
         })
     }

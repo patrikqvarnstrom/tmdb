@@ -11,15 +11,35 @@ import UIKit
 import SDWebImage
 import SnapKit
 
-class MovieListViewController: UITableViewController {
+class MovieListViewController: UIViewController {
+
+    lazy var dismissButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Dismiss", for: .normal)
+        button.target(forAction: #selector(dismissSearch), withSender: self)
+        return button
+    }()
 
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.showsCancelButton = true
+        searchBar.showsCancelButton = false
         searchBar.placeholder = "Search .."
+        searchBar.searchBarStyle = .minimal
         searchBar.sizeToFit()
         return searchBar
+    }()
+
+    lazy var hStack: UIStackView = {
+        let hStack = UIStackView()
+        hStack.axis = .horizontal
+        hStack.spacing = 12
+        hStack.sizeToFit()
+        return hStack
+    }()
+
+    lazy var tableView: UITableView = {
+        return UITableView(frame: .zero, style: .plain)
     }()
 
     private var viewModel: ListViewModel?
@@ -29,6 +49,7 @@ class MovieListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setupConstraints()
         setupSearch()
         viewModel?.fetchableDelegate = self
         viewModel?.fetchData()
@@ -38,13 +59,27 @@ class MovieListViewController: UITableViewController {
         self.viewModel = viewModel
     }
 
+    @objc private func dismissSearch() {
+        coordinator?.navigate(to: .upcoming)
+    }
+
+    private func setupConstraints() {
+        tableView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.width.equalToSuperview()
+            make.top.equalToSuperview().offset(100)
+        }
+    }
+
     private func setupSearch() {
         guard let listLayout = viewModel?.listLayout else { return }
         switch listLayout {
         case .largeImagesWithSearch:
-            tableView.tableHeaderView = searchBar
-            searchBar.snp.makeConstraints { make in
-                make.leading.trailing.top.width.equalToSuperview()
+            hStack.addArrangedSubview(searchBar)
+            hStack.addArrangedSubview(dismissButton)
+            view.addSubview(hStack)
+            hStack.snp.makeConstraints { make in
+                make.width.leading.trailing.equalToSuperview().inset(24)
+                make.top.equalToSuperview().offset(55)
             }
         default:
             break
@@ -52,7 +87,8 @@ class MovieListViewController: UITableViewController {
     }
 
     private func setupViews() {
-        title = "Upcoming"
+        view.backgroundColor = .white
+        view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -70,8 +106,11 @@ class MovieListViewController: UITableViewController {
     @objc private func search() {
         coordinator?.navigate(to: .search)
     }
+}
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+extension MovieListViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let item = viewModel?.listItems[indexPath.row] else { return UITableViewCell() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieLargeListCell.reuseIdentifier, for: indexPath) as? MovieLargeListCell else { return UITableViewCell() }
 
@@ -86,21 +125,21 @@ class MovieListViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let destination = viewModel?.destination(for: indexPath) else { return }
         coordinator?.navigate(to: destination)
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let count = viewModel?.listItems.count else { return }
         if indexPath.row == count - 1 { viewModel?.fetchData() }
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.sections ?? 0
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.listItems.count ?? 0
     }
 

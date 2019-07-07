@@ -17,6 +17,7 @@
 		5117B12722D2706C00A814EF /* Array_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5117B12622D2706C00A814EF /* Array_Extensions.swift */; };
 		5117B12E22D2835100A814EF /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5117B12D22D2835100A814EF /* SearchResult.swift */; };
 		5117B13022D2838D00A814EF /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5117B12F22D2838D00A814EF /* SearchPage.swift */; };
+		5117B13222D293E300A814EF /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5117B13122D293E300A814EF /* SearchViewModel.swift */; };
 		51B1DBB222CFB1CD00D81966 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1DBB122CFB1CD00D81966 /* AppDelegate.swift */; };
 		51B1DBB922CFB1CE00D81966 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51B1DBB822CFB1CE00D81966 /* Assets.xcassets */; };
 		51B1DBBC22CFB1CE00D81966 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51B1DBBA22CFB1CE00D81966 /* LaunchScreen.storyboard */; };
@@ -72,6 +73,7 @@
 		5117B12622D2706C00A814EF /* Array_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array_Extensions.swift; sourceTree = "<group>"; };
 		5117B12D22D2835100A814EF /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		5117B12F22D2838D00A814EF /* SearchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPage.swift; sourceTree = "<group>"; };
+		5117B13122D293E300A814EF /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		51B1DBAE22CFB1CD00D81966 /* tmdb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tmdb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51B1DBB122CFB1CD00D81966 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		51B1DBB822CFB1CE00D81966 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -145,6 +147,14 @@
 			path = Movie;
 			sourceTree = "<group>";
 		};
+		5117B13322D2943100A814EF /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				5117B13122D293E300A814EF /* SearchViewModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		51B1DBA522CFB1CD00D81966 = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +214,7 @@
 		51B1DBE422CFB6D100D81966 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				5117B13322D2943100A814EF /* Search */,
 				5117B11C22D24FF700A814EF /* Movie */,
 				51B1DC0622CFFAF400D81966 /* Login */,
 				51B1DC0522CFFAEF00D81966 /* Upcoming */,
@@ -551,6 +562,7 @@
 				51B1DBB222CFB1CD00D81966 /* AppDelegate.swift in Sources */,
 				5117B12222D250CC00A814EF /* Movie.swift in Sources */,
 				5117B13022D2838D00A814EF /* SearchPage.swift in Sources */,
+				5117B13222D293E300A814EF /* SearchViewModel.swift in Sources */,
 				51B1DBEB22CFB83500D81966 /* MovieListViewController.swift in Sources */,
 				51B1DBE922CFB6F800D81966 /* ListCoordinator.swift in Sources */,
 				5117B12E22D2835100A814EF /* SearchResult.swift in Sources */,

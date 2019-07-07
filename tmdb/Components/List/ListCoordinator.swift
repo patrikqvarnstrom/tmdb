@@ -25,12 +25,14 @@ class ListCoordinator: Coordinator {
                                                       identifier: id))
             return viewController
         case .search:
-            let viewController = MovieListViewController(style: .plain)
+            let viewController = MovieListViewController()
+            viewController.title = "Search"
             viewController.coordinator = self
-            viewController.setup(with: UpcomingViewModel(listLayout: .largeImagesWithSearch))
+            viewController.setup(with: SearchViewModel(listLayout: .largeImagesWithSearch))
             return viewController
         case .upcoming:
-            let viewController = MovieListViewController(style: .plain)
+            let viewController = MovieListViewController()
+            viewController.title = "Upcoming"
             viewController.coordinator = self
             viewController.setup(with: UpcomingViewModel())
             return viewController
@@ -41,16 +43,13 @@ class ListCoordinator: Coordinator {
     }
 
     func navigate(to destination: Destination) {
-        let viewController = makeViewController(for: destination)
         switch destination {
-        case .movie:
-            rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-            rootViewController?.pushViewController(viewController, animated: true)
         case .search:
-            rootViewController?.present(viewController,
-                                        animated: true,
-                                        completion: nil)
-        case .upcoming:
+            let viewController = makeViewController(for: destination)
+            rootViewController?.present(viewController, animated: true, completion: nil)
+        case .movie, .upcoming:
+            rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+            let viewController = makeViewController(for: destination)
             rootViewController?.pushViewController(viewController, animated: true)
         default:
             break
