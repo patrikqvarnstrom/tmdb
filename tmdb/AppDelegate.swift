@@ -21,15 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
 
-        #if debug
-        if CommandLine.arguments.contains("UITEST") {
-            UIView.setAnimationsEnabled(false)
-            UIApplication.shared.keyWindow?.layer.speed = 100
-            appCoordinator = AppCoordinator(window: window)
-            appCoordinator?.navigate(to: .authentication)
-        }
-        #endif
-
         appCoordinator = AppCoordinator(window: window)
         appCoordinator?.navigate(to: session.isSessionValid ? .upcoming : .authentication)
 

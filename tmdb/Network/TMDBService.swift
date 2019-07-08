@@ -33,8 +33,8 @@ class TMDBService {
         self.urlSession = urlSession
     }
 
-    private func getSearchResult(searchRequest: SearchRequest, onCompletion: @escaping (NetworkResult<MoviePage>) -> Void) {
-        networkManager.loadData(from: Router(.search(query: searchRequest.query)).asURLRequest(), model: MoviePage.self) { result in
+    private func getSearchResult(searchRequest: SearchRequest, onCompletion: @escaping (NetworkResult<Page>) -> Void) {
+        networkManager.loadData(from: Router(.search(query: searchRequest.query)).asURLRequest(), model: Page.self) { result in
             onCompletion(result)
         }
     }
@@ -51,8 +51,8 @@ class TMDBService {
         }
     }
 
-    private func getUpcoming(listRequest: ListRequest, onCompletion: @escaping (NetworkResult<MoviePage>) -> Void) {
-        networkManager.loadData(from: Router(.upcoming(page: listRequest.page)).asURLRequest(), model: MoviePage.self) { result in
+    private func getUpcoming(listRequest: ListRequest, onCompletion: @escaping (NetworkResult<Page>) -> Void) {
+        networkManager.loadData(from: Router(.upcoming(page: listRequest.page)).asURLRequest(), model: Page.self) { result in
                 onCompletion(result)
         }
     }
@@ -68,7 +68,7 @@ class TMDBService {
         })
     }
 
-    func fetchUpcoming(page: String = "1", completionHandler: @escaping (_ page: MoviePage?, _ error: Error?) -> Void) {
+    func fetchUpcoming(page: String = "1", completionHandler: @escaping (_ page: Page?, _ error: Error?) -> Void) {
         getUpcoming(listRequest: ListRequest(page: page), onCompletion: { result in
             switch result {
             case .failure(let error):
@@ -92,7 +92,7 @@ class TMDBService {
         })
     }
 
-    func fetchSearchResults(query: String, completionHandler: @escaping (_ searchPage: MoviePage?, _ error: Error?) -> Void) {
+    func fetchSearchResults(query: String, completionHandler: @escaping (_ searchPage: Page?, _ error: Error?) -> Void) {
         getSearchResult(searchRequest: SearchRequest(query: query), onCompletion: { result in
             switch result {
             case .failure(let error):

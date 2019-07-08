@@ -22,7 +22,7 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "NO">
@@ -31,6 +31,20 @@
                BlueprintIdentifier = "51B1DBC122CFB1CE00D81966"
                BuildableName = "tmdbTests.xctest"
                BlueprintName = "tmdbTests"
+               ReferencedContainer = "container:tmdb.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "510DF14722D385800039C6FF"
+               BuildableName = "tmdbUITests.xctest"
+               BlueprintName = "tmdbUITests"
                ReferencedContainer = "container:tmdb.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "51B1DBC122CFB1CE00D81966"
                BuildableName = "tmdbTests.xctest"
                BlueprintName = "tmdbTests"
+               ReferencedContainer = "container:tmdb.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "510DF14722D385800039C6FF"
+               BuildableName = "tmdbUITests.xctest"
+               BlueprintName = "tmdbUITests"
                ReferencedContainer = "container:tmdb.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -85,6 +109,12 @@
             ReferencedContainer = "container:tmdb.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "UITEST"
+            isEnabled = "NO">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

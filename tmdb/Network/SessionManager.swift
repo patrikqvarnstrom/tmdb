@@ -9,16 +9,12 @@
 import Foundation
 
 struct GuestSession: Codable {
-    let statusMessage: String?
-    let statusCode: Int?
     let success: Bool
     let expiresAt: String?
     let guestID: String?
 
     enum CodingKeys: String, CodingKey {
         case success
-        case statusMessage = "status_message"
-        case statusCode = "status_code"
         case expiresAt = "expires_at"
         case guestID = "guest_session_id"
     }

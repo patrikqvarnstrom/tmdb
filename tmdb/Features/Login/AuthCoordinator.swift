@@ -44,7 +44,8 @@ class AuthCoordinator: Coordinator {
 
 extension AuthCoordinator: AuthenticationDelegate {
     func authenticationDidFail() {
-        // print("do something")
+        // Error feedback if guest session failed
+        // e.g. coordinator?.navigate(to: .signUp)
     }
 
     func authenticationDidSucceed() {

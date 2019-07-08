@@ -1,5 +1,5 @@
 //
-//  MoviePage.swift
+//  Page.swift
 //  tmdb
 //
 //  Created by Patrik Qvarnström on 2019-07-06.
@@ -8,11 +8,12 @@
 
 import Foundation
 
-struct MoviePage: Codable {
-    let page: Int
+struct Page: Codable {
+    let pageNumber: Int
     let results: [ListItem]
 
     enum CodingKeys: String, CodingKey {
-        case page, results
+        case results
+        case pageNumber = "page"
     }
 }

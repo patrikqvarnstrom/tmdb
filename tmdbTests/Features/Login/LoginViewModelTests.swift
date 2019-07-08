@@ -87,9 +87,7 @@ class MockLoginViewModel: AuthenticationViewModel {
     func authenticate() {
         if sessionHandler.isSessionValid {
             authenticationDelegate?.authenticationDidSucceed()
-            sessionHandler.authenticationDidSucceed(session: GuestSession(statusMessage: "Success",
-                                                                          statusCode: 200,
-                                                                          success: true,
+            sessionHandler.authenticationDidSucceed(session: GuestSession(success: true,
                                                                           expiresAt: "",
                                                                           guestID: ""))
         } else {

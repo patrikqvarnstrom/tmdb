@@ -82,7 +82,7 @@ extension LoginViewController: AuthenticationDelegate {
     }
 
     func authenticationDidSucceed() {
-        informationLabel.text = "Authentication successful"
+        informationLabel.text = "Logging in .."
         animationView.play(fromProgress: animationView.currentProgress,
                            toProgress: 1.3,
                            loopMode: .playOnce, completion: { [weak self] _ in
