@@ -24,17 +24,18 @@ class ListCoordinator: Coordinator {
             viewController.setup(with: MovieViewModel(fetchableDelegate: viewController,
                                                       identifier: id))
             return viewController
-        case .search:
+        case .search(let query):
             let viewController = MovieListViewController()
             viewController.title = "Search"
             viewController.coordinator = self
-            viewController.setup(with: SearchViewModel(listLayout: .largeImagesWithSearch))
+            viewController.setup(with: SearchViewModel(listLayout: .largeImagesWithSearch,
+                                                       query: query))
             return viewController
         case .upcoming:
             let viewController = MovieListViewController()
             viewController.title = "Upcoming"
             viewController.coordinator = self
-            viewController.setup(with: UpcomingViewModel())
+            viewController.setup(with: UpcomingViewModel(coordinator: self))
             return viewController
         default:
             assertionFailure("Non supported destination")

@@ -22,5 +22,5 @@ protocol ListViewModel: class {
     func destination(for indexPath: IndexPath) -> Destination?
     func fetchData()
     func tmdb()
-    func search(with query: String)
+    func search(_ query: String?)
 }

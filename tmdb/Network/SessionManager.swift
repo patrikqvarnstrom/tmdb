@@ -24,26 +24,29 @@ struct GuestSession: Codable {
     }
 }
 
-class SessionManager {
+protocol SessionHandler {
+    var isSessionValid: Bool { get }
+    func authenticationDidSucceed(session: GuestSession)
+}
 
-    static let shared = SessionManager()
+class SessionManager: SessionHandler {
 
-    static private let sessionExpiration = "sessionExpiration"
-    static private var sessionType: SessionType? = .unauthorized
+    private let sessionExpiration = "sessionExpiration"
+    private var sessionType: SessionType? = .unauthorized
 
     enum SessionType {
         case guest
         case unauthorized
     }
 
-    static var isSessionValid: Bool {
+    var isSessionValid: Bool {
         guard let storedValue = UserDefaults.standard.value(forKey: sessionExpiration) as? String else { return false }
         guard let expirationDate = DateFormatter().date(from: storedValue) else { return true }
         return expirationDate > Date()
     }
 
-    static func authenticationDidSucceed(session: GuestSession) {
-        SessionManager.sessionType = .guest
+    func authenticationDidSucceed(session: GuestSession) {
+        sessionType = .guest
         UserDefaults.standard.set(session.expiresAt, forKey: sessionExpiration)
     }
 

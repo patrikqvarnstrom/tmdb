@@ -12,27 +12,38 @@ import UIKit
 final class UpcomingViewModel: ListViewModel {
 
     private let tmdbService: TMDBService
+    private let urlOpener: URLOpener
 
     var listLayout: ListLayout
     var listItems = [ListItem]()
+    var isFetchInProgress: Bool = false
     var sections = 1
-
-    private var isFetchInProgress: Bool = false
+    
     private var page: Int = 1
 
+    weak var coordinator: Coordinator?
     weak var fetchableDelegate: Fetchable?
 
-    init(fetchableDelegate: Fetchable? = nil,
+    init(application: UIApplication = UIApplication.shared,
+         coordinator: Coordinator? = nil,
+         fetchableDelegate: Fetchable? = nil,
          listLayout: ListLayout = .largeImages,
-         tmdbService: TMDBService = TMDBService()) {
+         tmdbService: TMDBService = TMDBService(),
+         urlOpener: URLOpener = URLOpener()) {
+        self.coordinator = coordinator
         self.fetchableDelegate = fetchableDelegate
         self.listLayout = listLayout
         self.tmdbService = tmdbService
+        self.urlOpener = urlOpener
     }
 
     func destination(for indexPath: IndexPath) -> Destination? {
         let item = listItems[indexPath.row]
         return .movie(id: item.id.description)
+    }
+
+    func sortedByLatestDate(listItems: [ListItem]) -> [ListItem] {
+        return listItems.sorted { $0.releaseDate > $1.releaseDate }
     }
 
     func fetchData() {
@@ -43,7 +54,9 @@ final class UpcomingViewModel: ListViewModel {
             self?.isFetchInProgress = false
             if err == nil {
                 self?.page += 1
-                self?.listItems.append(contentsOf: page?.results ?? []) 
+                if let results = self?.sortedByLatestDate(listItems: page?.results ?? []) {
+                    self?.listItems.append(contentsOf: results)
+                }
             }
             self?.fetchableDelegate?.fetched()
         })
@@ -51,21 +64,11 @@ final class UpcomingViewModel: ListViewModel {
 
     func tmdb() {
         guard let url = URL(string: "https://www.themoviedb.org") else { return }
-        UIApplication.shared.open(url)
+        urlOpener.openWebsite(url: url, completion: nil)
     }
 
-    func search(with query: String) {
-        guard !isFetchInProgress else { return }
-        isFetchInProgress = true
-
-        tmdbService.fetchSearchResults(query: query, completionHandler: { [weak self] page, err in
-            self?.isFetchInProgress = false
-            if err == nil {
-                self?.page += 1
-                self?.listItems = page?.results ?? []
-            }
-            self?.fetchableDelegate?.fetched()
-        })
+    func search(_ query: String? = nil) {
+        coordinator?.navigate(to: .search(query: nil))
     }
 
 }

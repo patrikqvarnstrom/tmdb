@@ -13,29 +13,12 @@ import SnapKit
 
 class MovieListViewController: UIViewController {
 
-    lazy var dismissButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Dismiss", for: .normal)
-        button.target(forAction: #selector(dismissSearch), withSender: self)
-        return button
-    }()
-
-    lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.delegate = self
-        searchBar.showsCancelButton = false
-        searchBar.placeholder = "Search .."
-        searchBar.searchBarStyle = .minimal
-        searchBar.sizeToFit()
-        return searchBar
-    }()
-
-    lazy var hStack: UIStackView = {
-        let hStack = UIStackView()
-        hStack.axis = .horizontal
-        hStack.spacing = 12
-        hStack.sizeToFit()
-        return hStack
+    lazy var searchContainer: SearchContainer = {
+        let searchContainer = SearchContainer()
+        searchContainer.backgroundColor = .white
+        searchContainer.dismissButton.addTarget(self, action: #selector(dismissSearch), for: .touchUpInside)
+        searchContainer.searchBar.delegate = self
+        return searchContainer
     }()
 
     lazy var tableView: UITableView = {
@@ -59,14 +42,10 @@ class MovieListViewController: UIViewController {
         self.viewModel = viewModel
     }
 
-    @objc private func dismissSearch() {
-        coordinator?.navigate(to: .upcoming)
-    }
-
     private func setupConstraints() {
         tableView.snp.makeConstraints { make in
             make.bottom.leading.trailing.width.equalToSuperview()
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview()
         }
     }
 
@@ -74,12 +53,14 @@ class MovieListViewController: UIViewController {
         guard let listLayout = viewModel?.listLayout else { return }
         switch listLayout {
         case .largeImagesWithSearch:
-            hStack.addArrangedSubview(searchBar)
-            hStack.addArrangedSubview(dismissButton)
-            view.addSubview(hStack)
-            hStack.snp.makeConstraints { make in
+            view.addSubview(searchContainer)
+            searchContainer.snp.makeConstraints { make in
                 make.width.leading.trailing.equalToSuperview().inset(24)
                 make.top.equalToSuperview().offset(55)
+            }
+            tableView.snp.remakeConstraints { make in
+                make.bottom.leading.trailing.width.equalToSuperview()
+                make.top.equalToSuperview().offset(100)
             }
         default:
             break
@@ -99,12 +80,16 @@ class MovieListViewController: UIViewController {
                                                             action: #selector(search))
     }
 
-    @objc private func tmdb() {
-        viewModel?.tmdb()
+    @objc private func dismissSearch() {
+        dismiss(animated: true, completion: nil)
     }
 
     @objc private func search() {
-        coordinator?.navigate(to: .search)
+        viewModel?.search(nil)
+    }
+
+    @objc private func tmdb() {
+        viewModel?.tmdb()
     }
 }
 
@@ -118,8 +103,8 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.largeImageView.releaseDateLabel.text = "Release date: \(item.releaseDate)"
         cell.largeImageView.titleLabel.text = item.originalTitle
 
-        if let imageUrl = Router(.image(path: item.posterPath ?? "")).asURLRequest()?.url {
-            cell.largeImageView.poster.sd_setImage(with: imageUrl)
+        if let posterUrl = Router(.image(path: item.posterPath ?? "")).asURLRequest()?.url {
+            cell.largeImageView.poster.sd_setImage(with: posterUrl)
         }
 
         return cell
@@ -148,7 +133,7 @@ extension MovieListViewController: UITableViewDelegate, UITableViewDataSource {
 extension MovieListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: { [weak self] in
-            self?.viewModel?.search(with: searchText)
+            self?.viewModel?.search(searchText)
         })
     }
 }

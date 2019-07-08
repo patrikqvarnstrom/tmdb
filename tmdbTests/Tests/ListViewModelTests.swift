@@ -18,7 +18,7 @@ class ListViewModelTests: XCTestCase {
 
         // when
         mockListViewModel.fetchData()
-        mockListViewModel.search(with: "")
+        mockListViewModel.search(nil)
 
         // then
         XCTAssertEqual(mockViewController.callCount, 2)
@@ -51,7 +51,7 @@ class MockListViewModel: ListViewModel {
         //
     }
 
-    func search(with query: String) {
+    func search(_ query: String?) {
         fetchableDelegate?.fetched()
     }
 

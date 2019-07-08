@@ -19,8 +19,6 @@ struct ListItem: Codable {
     let posterPath: String?
     let popularity: Double
     let releaseDate: String
-    let statusMessage: String?
-    let statusCode: Int?
     let title: String
     let video: Bool
     let voteAverage: Double
@@ -33,8 +31,6 @@ struct ListItem: Codable {
         case originalTitle = "original_title"
         case posterPath = "poster_path"
         case releaseDate = "release_date"
-        case statusMessage = "status_message"
-        case statusCode = "status_code"
         case voteAverage = "vote_average"
     }
 }

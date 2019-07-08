@@ -13,30 +13,39 @@ protocol AuthenticationDelegate: class {
     func authenticationDidSucceed()
 }
 
-class LoginViewModel {
+protocol AuthenticationViewModel {
+    var isSessionValid: Bool { get }
+    func authenticate()
+    func authenticationRequired()
+}
+
+class LoginViewModel: AuthenticationViewModel {
 
     weak var authenticationDelegate: AuthenticationDelegate?
 
-    private var isSessionValid: Bool {
-        return SessionManager.isSessionValid
+    var isSessionValid: Bool {
+        return sessionHandler.isSessionValid
     }
 
     private let tmdbService: TMDBService
+    private let sessionHandler: SessionHandler
 
     init(authenticationDelegate: AuthenticationDelegate? = nil,
-         tmdbService: TMDBService = TMDBService()) {
+         tmdbService: TMDBService = TMDBService(),
+         sessionHandler: SessionHandler = SessionManager()) {
         self.authenticationDelegate = authenticationDelegate
         self.tmdbService = tmdbService
+        self.sessionHandler = sessionHandler
     }
 
     func authenticate() {
         isSessionValid ? authenticationDelegate?.authenticationDidSucceed() : authenticationRequired()
     }
 
-    private func authenticationRequired() {
+    func authenticationRequired() {
         tmdbService.authenticateGuest(completionHandler: { [weak self] result, err in
             if let sesssion = result {
-                SessionManager.authenticationDidSucceed(session: sesssion)
+                self?.sessionHandler.authenticationDidSucceed(session: sesssion)
                 self?.authenticationDelegate?.authenticationDidSucceed()
             } else {
                 self?.authenticationDelegate?.authenticationDidFail()

@@ -19,6 +19,13 @@ class MovieImageView: UIView {
         return poster
     }()
 
+    lazy var backdrop: UIImageView = {
+        let backdrop = UIImageView(image: nil)
+        backdrop.contentMode = .scaleAspectFit
+        backdrop.isHidden = true
+        return backdrop
+    }()
+
     lazy var genreLabel: UILabel = {
         let genreLabel = UILabel()
         genreLabel.textAlignment = .center
@@ -86,12 +93,18 @@ class MovieImageView: UIView {
             make.height.equalTo(500)
         }
 
+        backdrop.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(440)
+        }
+
         spacer.snp.makeConstraints { make in
             make.height.equalTo(8)
         }
     }
 
     private func setupViews() {
+        stackView.addArrangedSubview(backdrop)
         stackView.addArrangedSubview(poster)
         stackView.addArrangedSubview(spacer)
         stackView.addArrangedSubview(titleLabel)

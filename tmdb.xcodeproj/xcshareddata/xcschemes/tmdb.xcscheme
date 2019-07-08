@@ -20,6 +20,20 @@
                ReferencedContainer = "container:tmdb.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "51B1DBC122CFB1CE00D81966"
+               BuildableName = "tmdbTests.xctest"
+               BlueprintName = "tmdbTests"
+               ReferencedContainer = "container:tmdb.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -35,16 +49,6 @@
                BlueprintIdentifier = "51B1DBC122CFB1CE00D81966"
                BuildableName = "tmdbTests.xctest"
                BlueprintName = "tmdbTests"
-               ReferencedContainer = "container:tmdb.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "51B1DBCC22CFB1CE00D81966"
-               BuildableName = "tmdbUITests.xctest"
-               BlueprintName = "tmdbUITests"
                ReferencedContainer = "container:tmdb.xcodeproj">
             </BuildableReference>
          </TestableReference>
