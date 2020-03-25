@@ -13,7 +13,7 @@ I prefer writing all my views programmatically for several reasons. There is no 
 
 #### Installation
 ```
-git clone -b develop git@github.com:patrikqvarnstrom/tmdb.git
+git clone -b git@github.com:patrikqvarnstrom/tmdb.git
 ```
 
 #### Features
